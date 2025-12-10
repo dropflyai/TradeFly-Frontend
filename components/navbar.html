@@ -49,5 +49,28 @@
                 </a>
             </li>
         </ul>
+
+        <div class="nav-user">
+            <div class="nav-user-info">
+                <span id="nav-user-email" style="font-size: 0.875rem; color: var(--text-secondary);">Loading...</span>
+            </div>
+            <button class="btn btn-sm" onclick="TradeFlyAuth.signOut()" style="margin-left: 1rem;">
+                Logout
+            </button>
+        </div>
     </div>
 </nav>
+
+<script>
+// Load user info in navbar
+(async function() {
+    try {
+        const profile = await TradeFlyAuth.getUserProfile();
+        if (profile) {
+            document.getElementById('nav-user-email').textContent = profile.email;
+        }
+    } catch (error) {
+        console.error('Error loading user profile:', error);
+    }
+})();
+</script>
