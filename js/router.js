@@ -34,7 +34,22 @@ class Router {
 
     async loadRoute() {
         const path = window.location.pathname;
-        const route = this.routes[path] || this.routes['/'];
+
+        // Check for exact match first
+        let route = this.routes[path];
+
+        // If no exact match, check for pattern matches (e.g., /stock/:symbol)
+        if (!route) {
+            // Check for stock detail pattern
+            if (path.startsWith('/stock/')) {
+                route = { template: '/pages/stock-detail.html', init: null };
+            }
+        }
+
+        // Fallback to home
+        if (!route) {
+            route = this.routes['/'];
+        }
 
         if (!route) {
             console.error(`No route found for ${path}`);

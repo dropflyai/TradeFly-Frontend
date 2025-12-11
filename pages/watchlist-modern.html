@@ -1,0 +1,237 @@
+<!-- Modern Watchlist - Stocktwits Style -->
+<div class="watchlist-modern">
+    <div class="watchlist-header">
+        <h1 class="watchlist-title">Watchlist</h1>
+        <div class="watchlist-controls">
+            <button class="btn-filter" onclick="WatchlistModern.filterBy('all')">All</button>
+            <button class="btn-filter" onclick="WatchlistModern.filterBy('gainers')">Gainers</button>
+            <button class="btn-filter" onclick="WatchlistModern.filterBy('losers')">Losers</button>
+        </div>
+    </div>
+
+    <!-- Stock List -->
+    <div class="stock-list" id="modern-stock-list">
+        <!-- Loading State -->
+        <div class="stock-item">
+            <div class="stock-info">
+                <div class="stock-icon skeleton" style="width: 40px; height: 40px;"></div>
+                <div class="stock-details" style="flex: 1;">
+                    <div class="skeleton" style="width: 80px; height: 20px; margin-bottom: 4px;"></div>
+                    <div class="skeleton" style="width: 120px; height: 16px;"></div>
+                </div>
+            </div>
+            <div class="stock-chart">
+                <div class="skeleton" style="width: 100%; height: 100%;"></div>
+            </div>
+            <div class="stock-price-info">
+                <div class="skeleton" style="width: 60px; height: 20px; margin-bottom: 4px;"></div>
+                <div class="skeleton" style="width: 70px; height: 16px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const WatchlistModern = {
+    watchlist: ['NVDA', 'TSLA', 'AAPL', 'AMD', 'MSFT', 'META', 'GOOGL', 'AMZN', 'SPY', 'QQQ'],
+    currentFilter: 'all',
+    stockData: {},
+
+    async init() {
+        console.log('Initializing Modern Watchlist');
+
+        await this.loadStockData();
+
+        // Auto-refresh every 30 seconds
+        setInterval(() => this.loadStockData(), 30000);
+    },
+
+    async loadStockData() {
+        try {
+            // Fetch dynamic watchlist from API
+            const response = await fetch('/api/market/dynamic-watchlist');
+            const data = await response.json();
+
+            // Store stock data
+            if (data && data.symbols) {
+                data.symbols.forEach(stock => {
+                    this.stockData[stock.symbol] = stock;
+                });
+            }
+
+            this.renderStockList();
+        } catch (error) {
+            console.error('Error loading stock data:', error);
+            this.renderStockList(); // Render with mock data
+        }
+    },
+
+    renderStockList() {
+        const container = document.getElementById('modern-stock-list');
+
+        // Get stocks to display
+        let stocks = this.watchlist.map(symbol => {
+            // Use API data if available, otherwise create mock data
+            if (this.stockData[symbol]) {
+                return this.stockData[symbol];
+            }
+
+            // Mock data for display
+            const change = (Math.random() - 0.5) * 10;
+            const price = 100 + Math.random() * 400;
+
+            return {
+                symbol: symbol,
+                name: this.getStockName(symbol),
+                price: price.toFixed(2),
+                change: change.toFixed(2),
+                change_percent: ((change / price) * 100).toFixed(2),
+                volume: (Math.random() * 100000000).toFixed(0)
+            };
+        });
+
+        // Apply filter
+        if (this.currentFilter === 'gainers') {
+            stocks = stocks.filter(s => parseFloat(s.change) > 0);
+            stocks.sort((a, b) => parseFloat(b.change_percent) - parseFloat(a.change_percent));
+        } else if (this.currentFilter === 'losers') {
+            stocks = stocks.filter(s => parseFloat(s.change) < 0);
+            stocks.sort((a, b) => parseFloat(a.change_percent) - parseFloat(b.change_percent));
+        }
+
+        if (stocks.length === 0) {
+            container.innerHTML = `
+                <div class="stock-item">
+                    <div style="padding: 2rem; text-align: center; color: var(--text-secondary); width: 100%;">
+                        <p>No stocks match this filter</p>
+                    </div>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = stocks.map(stock => this.renderStockItem(stock)).join('');
+    },
+
+    renderStockItem(stock) {
+        const isPositive = parseFloat(stock.change) >= 0;
+        const changeClass = isPositive ? 'positive' : 'negative';
+        const changeIcon = isPositive ? '▲' : '▼';
+
+        return `
+            <div class="stock-item" onclick="WatchlistModern.navigateToStock('${stock.symbol}')">
+                <div class="stock-info">
+                    <div class="stock-icon">
+                        ${stock.symbol.substring(0, 2)}
+                    </div>
+                    <div class="stock-details">
+                        <div class="stock-symbol">${stock.symbol}</div>
+                        <div class="stock-name">${stock.name}</div>
+                    </div>
+                </div>
+
+                <div class="stock-chart">
+                    ${this.renderMiniChart(stock.symbol, isPositive)}
+                </div>
+
+                <div class="stock-price-info">
+                    <div class="stock-price">$${stock.price}</div>
+                    <div class="stock-change ${changeClass}">
+                        <span class="stock-change-icon">${changeIcon}</span>
+                        <span>${stock.change_percent}%</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    },
+
+    renderMiniChart(symbol, isPositive) {
+        // Generate simple sparkline chart
+        const points = 15;
+        const width = 80;
+        const height = 40;
+        const color = isPositive ? '#00C805' : '#FF5000';
+
+        // Generate random but trending data
+        let data = [];
+        let value = 50;
+        for (let i = 0; i < points; i++) {
+            value += (Math.random() - 0.5) * 10;
+            value = Math.max(10, Math.min(90, value)); // Keep in bounds
+            data.push(value);
+        }
+
+        // Make trend match positive/negative
+        if (isPositive) {
+            data = data.map((v, i) => v + (i * 3));
+        } else {
+            data = data.map((v, i) => v - (i * 3));
+        }
+
+        // Normalize to height
+        const min = Math.min(...data);
+        const max = Math.max(...data);
+        const range = max - min || 1;
+
+        const normalized = data.map(v => height - ((v - min) / range * height));
+
+        // Create SVG path
+        const pathData = normalized.map((y, i) => {
+            const x = (i / (points - 1)) * width;
+            return `${i === 0 ? 'M' : 'L'} ${x.toFixed(2)} ${y.toFixed(2)}`;
+        }).join(' ');
+
+        return `
+            <svg viewBox="0 0 ${width} ${height}" style="width: 100%; height: 100%;">
+                <path
+                    d="${pathData}"
+                    fill="none"
+                    stroke="${color}"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                />
+            </svg>
+        `;
+    },
+
+    getStockName(symbol) {
+        const names = {
+            'NVDA': 'NVIDIA Corporation',
+            'TSLA': 'Tesla, Inc.',
+            'AAPL': 'Apple Inc.',
+            'AMD': 'Advanced Micro Devices',
+            'MSFT': 'Microsoft Corporation',
+            'META': 'Meta Platforms, Inc.',
+            'GOOGL': 'Alphabet Inc.',
+            'AMZN': 'Amazon.com, Inc.',
+            'SPY': 'SPDR S&P 500 ETF',
+            'QQQ': 'Invesco QQQ Trust'
+        };
+        return names[symbol] || symbol;
+    },
+
+    filterBy(filter) {
+        this.currentFilter = filter;
+
+        // Update button states
+        document.querySelectorAll('.btn-filter').forEach(btn => {
+            btn.style.background = 'var(--bg-secondary)';
+            btn.style.color = 'var(--text-primary)';
+        });
+        event.target.style.background = 'var(--bg-tertiary)';
+        event.target.style.color = 'var(--green)';
+
+        this.renderStockList();
+    },
+
+    navigateToStock(symbol) {
+        // Navigate to stock detail page (to be created)
+        console.log('Navigate to stock:', symbol);
+        Router.navigate(`/stock/${symbol}`);
+    }
+};
+
+// Initialize when page loads
+WatchlistModern.init();
+</script>

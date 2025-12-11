@@ -62,7 +62,7 @@ const routes = {
         init: null
     },
     '/watchlist': {
-        template: '/pages/watchlist.html',
+        template: '/pages/watchlist-modern.html',
         init: null
     },
     '/settings': {
