@@ -1,7 +1,7 @@
 // TradeFly API Configuration
 const API_CONFIG = {
-    // Production API URL
-    BASE_URL: 'https://api.tradeflyai.com',
+    // Production API URL (using IP until DNS is configured)
+    BASE_URL: 'http://18.223.164.188',
 
     // API Endpoints
     ENDPOINTS: {
