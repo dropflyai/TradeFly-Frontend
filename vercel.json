@@ -1,4 +1,10 @@
 {
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://api.tradeflyai.com/api/:path*"
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
