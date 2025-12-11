@@ -4,8 +4,17 @@
  */
 
 const TradeFlyAuth = {
-    supabaseUrl: 'https://nplgxhthjwwyywbnvxzt.supabase.co',
-    supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5wbGd4aHRoand3eXl3Ym52eHp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTIxNzEsImV4cCI6MjA3OTc2ODE3MX0.If32Moy6QhAHNXQfvbMLLfa0ssErIzV91qbeylJS8cg',
+    get supabaseUrl() {
+        return (typeof API_CONFIG !== 'undefined' && API_CONFIG.SUPABASE)
+            ? API_CONFIG.SUPABASE.URL
+            : 'https://nplgxhthjwwyywbnvxzt.supabase.co';
+    },
+
+    get supabaseAnonKey() {
+        return (typeof API_CONFIG !== 'undefined' && API_CONFIG.SUPABASE)
+            ? API_CONFIG.SUPABASE.ANON_KEY
+            : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5wbGd4aHRoand3eXl3Ym52eHp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTIxNzEsImV4cCI6MjA3OTc2ODE3MX0.If32Moy6QhAHNXQfvbMLLfa0ssErIzV91qbeylJS8cg';
+    },
 
     currentUser: null,
     currentSession: null,
