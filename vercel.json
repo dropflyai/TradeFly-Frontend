@@ -1,8 +1,18 @@
 {
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/login.html"
+    }
+  ],
   "rewrites": [
     {
       "source": "/api/:path*",
       "destination": "https://api.tradeflyai.com/api/:path*"
+    },
+    {
+      "source": "/((?!login|api|css|js|pages|components|images|test-auth)(?!.*\\.).*)",
+      "destination": "/index.html"
     }
   ],
   "headers": [
