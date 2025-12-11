@@ -1,10 +1,4 @@
 {
-  "redirects": [
-    {
-      "source": "/",
-      "destination": "/login.html"
-    }
-  ],
   "rewrites": [
     {
       "source": "/api/:path*",
