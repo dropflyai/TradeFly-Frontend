@@ -1,7 +1,7 @@
 // TradeFly API Configuration
 const API_CONFIG = {
-    // Production API URL (using IP until DNS is configured)
-    BASE_URL: 'http://18.223.164.188:8002',
+    // Production API URL (proxied through Vercel)
+    BASE_URL: '',
 
     // API Endpoints
     ENDPOINTS: {
