@@ -20,7 +20,27 @@ const TradeFlyAuth = {
             return false;
         }
 
-        this.client = supabase.createClient(this.supabaseUrl, this.supabaseAnonKey);
+        try {
+            this.client = supabase.createClient(this.supabaseUrl, this.supabaseAnonKey);
+            console.log('✅ Supabase client initialized');
+            return true;
+        } catch (error) {
+            console.error('❌ Failed to initialize Supabase client:', error);
+            return false;
+        }
+    },
+
+    /**
+     * Ensure client is initialized
+     */
+    ensureInitialized() {
+        if (!this.client) {
+            console.log('Client not initialized, attempting to initialize...');
+            const initialized = this.init();
+            if (!initialized) {
+                throw new Error('Failed to initialize Supabase client. Please check your configuration.');
+            }
+        }
         return true;
     },
 
@@ -53,9 +73,9 @@ const TradeFlyAuth = {
      * Sign up new user
      */
     async signUp(email, password, fullName) {
-        if (!this.client) {
-            throw new Error('Supabase client not initialized');
-        }
+        this.ensureInitialized();
+
+        console.log('Attempting signup for:', email);
 
         const { data, error } = await this.client.auth.signUp({
             email,
@@ -67,8 +87,12 @@ const TradeFlyAuth = {
             }
         });
 
-        if (error) throw error;
+        if (error) {
+            console.error('Signup error:', error);
+            throw error;
+        }
 
+        console.log('Signup successful:', data);
         return data;
     },
 
@@ -76,9 +100,7 @@ const TradeFlyAuth = {
      * Sign in existing user
      */
     async signIn(email, password) {
-        if (!this.client) {
-            throw new Error('Supabase client not initialized');
-        }
+        this.ensureInitialized();
 
         const { data, error } = await this.client.auth.signInWithPassword({
             email,

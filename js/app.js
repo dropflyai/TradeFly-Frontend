@@ -68,6 +68,10 @@ const routes = {
     '/settings': {
         template: '/pages/settings.html',
         init: null
+    },
+    '/onboarding': {
+        template: '/pages/onboarding.html',
+        init: null
     }
 };
 

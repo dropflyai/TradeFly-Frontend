@@ -1,0 +1,705 @@
+<!-- Onboarding Flow for First-Time Users -->
+<div class="onboarding-container">
+    <div class="onboarding-progress">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <div class="progress-text" id="progress-text">Step 1 of 4</div>
+    </div>
+
+    <!-- Step 1: Welcome -->
+    <div class="onboarding-step active" id="step-1">
+        <div class="onboarding-content">
+            <div class="onboarding-icon">🚀</div>
+            <h1 class="onboarding-title">Welcome to TradeFly AI</h1>
+            <p class="onboarding-subtitle">Your intelligent options trading platform powered by AI</p>
+
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">📊</div>
+                    <h3>AI-Powered Signals</h3>
+                    <p>Get real-time options trading signals with confidence scores</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📈</div>
+                    <h3>Live Charts</h3>
+                    <p>Track market movements with professional trading charts</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🧪</div>
+                    <h3>Paper Trading</h3>
+                    <p>Practice with $10,000 virtual money before going live</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🎓</div>
+                    <h3>Learn & Grow</h3>
+                    <p>Access educational content to master options trading</p>
+                </div>
+            </div>
+
+            <button class="btn-onboarding" onclick="Onboarding.nextStep()">Get Started</button>
+        </div>
+    </div>
+
+    <!-- Step 2: Risk Tolerance -->
+    <div class="onboarding-step" id="step-2">
+        <div class="onboarding-content">
+            <div class="onboarding-icon">⚖️</div>
+            <h1 class="onboarding-title">What's Your Risk Tolerance?</h1>
+            <p class="onboarding-subtitle">This helps us personalize your trading signals</p>
+
+            <div class="risk-options">
+                <div class="risk-option" onclick="Onboarding.selectRisk('conservative')">
+                    <div class="risk-icon">🛡️</div>
+                    <h3>Conservative</h3>
+                    <p>Focus on safer trades with lower risk</p>
+                    <div class="risk-indicator">
+                        <span class="indicator-dot active"></span>
+                        <span class="indicator-dot"></span>
+                        <span class="indicator-dot"></span>
+                    </div>
+                </div>
+
+                <div class="risk-option" onclick="Onboarding.selectRisk('moderate')">
+                    <div class="risk-icon">⚖️</div>
+                    <h3>Moderate</h3>
+                    <p>Balanced approach to risk and reward</p>
+                    <div class="risk-indicator">
+                        <span class="indicator-dot active"></span>
+                        <span class="indicator-dot active"></span>
+                        <span class="indicator-dot"></span>
+                    </div>
+                </div>
+
+                <div class="risk-option" onclick="Onboarding.selectRisk('aggressive')">
+                    <div class="risk-icon">🚀</div>
+                    <h3>Aggressive</h3>
+                    <p>Higher risk for potentially higher returns</p>
+                    <div class="risk-indicator">
+                        <span class="indicator-dot active"></span>
+                        <span class="indicator-dot active"></span>
+                        <span class="indicator-dot active"></span>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-onboarding btn-secondary" onclick="Onboarding.prevStep()">Back</button>
+        </div>
+    </div>
+
+    <!-- Step 3: Capital & Goals -->
+    <div class="onboarding-step" id="step-3">
+        <div class="onboarding-content">
+            <div class="onboarding-icon">💰</div>
+            <h1 class="onboarding-title">Tell Us About Your Trading Capital</h1>
+            <p class="onboarding-subtitle">This helps us recommend suitable trades</p>
+
+            <div class="capital-selector">
+                <label for="trading-capital">Total Trading Capital</label>
+                <div class="input-group">
+                    <span class="input-prefix">$</span>
+                    <input
+                        type="number"
+                        id="trading-capital"
+                        value="10000"
+                        min="500"
+                        step="500"
+                        class="position-input"
+                        onchange="Onboarding.updatePositionSizeRecommendation()"
+                    >
+                </div>
+                <div class="position-suggestions">
+                    <button class="suggestion-btn" onclick="Onboarding.setCapital(5000)">$5K</button>
+                    <button class="suggestion-btn" onclick="Onboarding.setCapital(10000)">$10K</button>
+                    <button class="suggestion-btn" onclick="Onboarding.setCapital(25000)">$25K</button>
+                    <button class="suggestion-btn" onclick="Onboarding.setCapital(50000)">$50K</button>
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <label for="daily-goal">Daily Profit Goal</label>
+                    <div class="input-group">
+                        <span class="input-prefix">$</span>
+                        <input
+                            type="number"
+                            id="daily-goal"
+                            value="200"
+                            min="50"
+                            step="50"
+                            class="position-input"
+                            onchange="Onboarding.updateDailyGoalNote()"
+                        >
+                    </div>
+                    <div class="position-suggestions">
+                        <button class="suggestion-btn" onclick="Onboarding.setDailyGoal(100)">$100</button>
+                        <button class="suggestion-btn" onclick="Onboarding.setDailyGoal(200)">$200</button>
+                        <button class="suggestion-btn" onclick="Onboarding.setDailyGoal(500)">$500</button>
+                        <button class="suggestion-btn" onclick="Onboarding.setDailyGoal(1000)">$1K</button>
+                    </div>
+                    <p class="position-note" id="daily-goal-note">Target: 2% daily return</p>
+                </div>
+
+                <div class="recommendation-box">
+                    <div class="recommendation-icon">💡</div>
+                    <div>
+                        <h4>Recommended Position Size</h4>
+                        <p id="recommended-position">$1,000 per trade (10% of capital)</p>
+                        <p class="recommendation-note">Based on conservative risk management</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-onboarding" onclick="Onboarding.nextStep()">Continue</button>
+            <button class="btn-onboarding btn-secondary" onclick="Onboarding.prevStep()">Back</button>
+        </div>
+    </div>
+
+    <!-- Step 4: Notifications -->
+    <div class="onboarding-step" id="step-4">
+        <div class="onboarding-content">
+            <div class="onboarding-icon">🔔</div>
+            <h1 class="onboarding-title">Stay Updated</h1>
+            <p class="onboarding-subtitle">Choose how you want to receive trading alerts</p>
+
+            <div class="notification-options">
+                <div class="notification-item">
+                    <div class="notification-info">
+                        <div class="notification-icon">📧</div>
+                        <div>
+                            <h3>Email Notifications</h3>
+                            <p>Get high-confidence signals sent to your email</p>
+                        </div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="email-notifications" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+
+                <div class="notification-item">
+                    <div class="notification-info">
+                        <div class="notification-icon">🖥️</div>
+                        <div>
+                            <h3>Browser Notifications</h3>
+                            <p>Instant alerts when you're on the platform</p>
+                        </div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="browser-notifications" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <button class="btn-onboarding" onclick="Onboarding.complete()">Start Trading</button>
+            <button class="btn-onboarding btn-secondary" onclick="Onboarding.prevStep()">Back</button>
+        </div>
+    </div>
+</div>
+
+<style>
+.onboarding-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--spacing-xl);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.onboarding-progress {
+    margin-bottom: var(--spacing-xl);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--bg-secondary);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: var(--spacing-sm);
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green), var(--blue));
+    transition: width 0.3s ease;
+    width: 25%;
+}
+
+.progress-text {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.onboarding-step {
+    display: none;
+    flex: 1;
+}
+
+.onboarding-step.active {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.onboarding-content {
+    text-align: center;
+}
+
+.onboarding-icon {
+    font-size: 4rem;
+    margin-bottom: var(--spacing-lg);
+}
+
+.onboarding-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-md);
+}
+
+.onboarding-subtitle {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-xl);
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+}
+
+.feature-item {
+    background: var(--bg-card);
+    padding: var(--spacing-lg);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.feature-item h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.feature-item p {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.risk-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+}
+
+.risk-option {
+    background: var(--bg-card);
+    padding: var(--spacing-lg);
+    border-radius: 12px;
+    border: 2px solid var(--border-color);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.risk-option:hover {
+    border-color: var(--green);
+    transform: translateY(-4px);
+}
+
+.risk-option.selected {
+    border-color: var(--green);
+    background: rgba(0, 200, 5, 0.1);
+}
+
+.risk-icon {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.risk-option h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.risk-option p {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-md);
+}
+
+.risk-indicator {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+}
+
+.indicator-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--bg-tertiary);
+}
+
+.indicator-dot.active {
+    background: var(--green);
+}
+
+.position-size-selector {
+    max-width: 400px;
+    margin: 0 auto var(--spacing-xl);
+}
+
+.position-size-selector label {
+    display: block;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: var(--spacing-md);
+}
+
+.input-prefix {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.position-input {
+    width: 100%;
+    padding: 1rem 1rem 1rem 2.5rem;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.position-input:focus {
+    outline: none;
+    border-color: var(--green);
+}
+
+.position-suggestions {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+}
+
+.suggestion-btn {
+    padding: 0.5rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.suggestion-btn:hover {
+    background: var(--bg-tertiary);
+    border-color: var(--green);
+}
+
+.position-note {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+.notification-options {
+    max-width: 500px;
+    margin: 0 auto var(--spacing-xl);
+}
+
+.notification-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-lg);
+    background: var(--bg-card);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    margin-bottom: var(--spacing-md);
+}
+
+.notification-info {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    text-align: left;
+}
+
+.notification-icon {
+    font-size: 2rem;
+}
+
+.notification-info h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.notification-info p {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 28px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--bg-tertiary);
+    transition: 0.3s;
+    border-radius: 28px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+    background-color: var(--green);
+}
+
+input:checked + .toggle-slider:before {
+    transform: translateX(22px);
+}
+
+.btn-onboarding {
+    width: 100%;
+    max-width: 400px;
+    padding: 1rem;
+    background: var(--green);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin: var(--spacing-sm) auto;
+    display: block;
+}
+
+.btn-onboarding:hover {
+    background: #00B004;
+    transform: translateY(-2px);
+}
+
+.btn-onboarding.btn-secondary {
+    background: transparent;
+    border: 2px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.btn-onboarding.btn-secondary:hover {
+    background: var(--bg-secondary);
+}
+
+@media (max-width: 768px) {
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .risk-options {
+        grid-template-columns: 1fr;
+    }
+
+    .position-suggestions {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+</style>
+
+<script>
+const Onboarding = {
+    currentStep: 1,
+    totalSteps: 4,
+    settings: {
+        riskTolerance: 'moderate',
+        tradingCapital: 10000,
+        dailyGoal: 200,
+        positionSize: 1000,
+        emailNotifications: true,
+        browserNotifications: true
+    },
+
+    init() {
+        console.log('Onboarding initialized');
+        this.updateProgress();
+        this.updatePositionSizeRecommendation();
+        this.updateDailyGoalNote();
+    },
+
+    nextStep() {
+        if (this.currentStep < this.totalSteps) {
+            document.getElementById(`step-${this.currentStep}`).classList.remove('active');
+            this.currentStep++;
+            document.getElementById(`step-${this.currentStep}`).classList.add('active');
+            this.updateProgress();
+        }
+    },
+
+    prevStep() {
+        if (this.currentStep > 1) {
+            document.getElementById(`step-${this.currentStep}`).classList.remove('active');
+            this.currentStep--;
+            document.getElementById(`step-${this.currentStep}`).classList.add('active');
+            this.updateProgress();
+        }
+    },
+
+    updateProgress() {
+        const percentage = (this.currentStep / this.totalSteps) * 100;
+        document.getElementById('progress-fill').style.width = `${percentage}%`;
+        document.getElementById('progress-text').textContent = `Step ${this.currentStep} of ${this.totalSteps}`;
+    },
+
+    selectRisk(level) {
+        this.settings.riskTolerance = level;
+
+        // Update UI
+        document.querySelectorAll('.risk-option').forEach(opt => opt.classList.remove('selected'));
+        event.target.closest('.risk-option').classList.add('selected');
+
+        // Update position size recommendation based on new risk level
+        this.updatePositionSizeRecommendation();
+
+        // Auto-advance after selection
+        setTimeout(() => this.nextStep(), 500);
+    },
+
+    setPositionSize(amount) {
+        this.settings.positionSize = amount;
+        document.getElementById('position-size').value = amount;
+    },
+
+    setCapital(amount) {
+        this.settings.tradingCapital = amount;
+        document.getElementById('trading-capital').value = amount;
+        this.updatePositionSizeRecommendation();
+        this.updateDailyGoalNote();
+    },
+
+    setDailyGoal(amount) {
+        this.settings.dailyGoal = amount;
+        document.getElementById('daily-goal').value = amount;
+        this.updateDailyGoalNote();
+    },
+
+    updatePositionSizeRecommendation() {
+        const capital = parseInt(document.getElementById('trading-capital').value) || 10000;
+        let percentage = 0.10; // Conservative default
+
+        if (this.settings.riskTolerance === 'moderate') percentage = 0.15;
+        if (this.settings.riskTolerance === 'aggressive') percentage = 0.20;
+
+        this.settings.positionSize = Math.floor(capital * percentage);
+        this.settings.tradingCapital = capital;
+
+        const riskLevel = this.settings.riskTolerance.charAt(0).toUpperCase() + this.settings.riskTolerance.slice(1);
+        document.getElementById('recommended-position').textContent =
+            `$${this.settings.positionSize.toLocaleString()} per trade (${(percentage * 100)}% of capital)`;
+
+        document.querySelector('.recommendation-note').textContent =
+            `Based on ${riskLevel.toLowerCase()} risk management`;
+    },
+
+    updateDailyGoalNote() {
+        const capital = parseInt(document.getElementById('trading-capital').value) || 10000;
+        const goal = parseInt(document.getElementById('daily-goal').value) || 200;
+        const percentage = ((goal / capital) * 100).toFixed(2);
+
+        this.settings.dailyGoal = goal;
+
+        document.getElementById('daily-goal-note').textContent =
+            `Target: ${percentage}% daily return`;
+    },
+
+    async complete() {
+        // Get current settings from form
+        this.settings.tradingCapital = parseInt(document.getElementById('trading-capital').value);
+        this.settings.dailyGoal = parseInt(document.getElementById('daily-goal').value);
+        this.settings.emailNotifications = document.getElementById('email-notifications').checked;
+        this.settings.browserNotifications = document.getElementById('browser-notifications').checked;
+
+        try {
+            // Save settings to database
+            await TradeFlyAuth.updateProfile({
+                onboarding_completed: true,
+                risk_tolerance: this.settings.riskTolerance,
+                trading_capital: this.settings.tradingCapital,
+                daily_goal: this.settings.dailyGoal,
+                default_position_size: this.settings.positionSize,
+                notification_email: this.settings.emailNotifications,
+                notification_browser: this.settings.browserNotifications
+            });
+
+            // Log activity
+            await TradeFlyAuth.logActivity('onboarding_completed', this.settings);
+
+            // Redirect to dashboard
+            window.location.href = '/';
+        } catch (error) {
+            console.error('Error saving onboarding settings:', error);
+            alert('There was an error saving your settings. Redirecting to dashboard...');
+            window.location.href = '/';
+        }
+    }
+};
+
+// Initialize onboarding
+Onboarding.init();
+</script>

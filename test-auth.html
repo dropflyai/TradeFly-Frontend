@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Supabase Auth</title>
+    <style>
+        body {
+            font-family: monospace;
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 2rem;
+        }
+        .test-result {
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #2a2a2a;
+            border-left: 4px solid #00ff00;
+        }
+        .error {
+            border-left-color: #ff0000;
+            color: #ff0000;
+        }
+        button {
+            background: #00ff00;
+            color: #000;
+            border: none;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            margin: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>TradeFly Auth Test</h1>
+
+    <div id="results"></div>
+
+    <button onclick="testConnection()">Test Connection</button>
+    <button onclick="testSignup()">Test Signup</button>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+        const SUPABASE_URL = 'https://nplgxhthjwwyywbnvxzt.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5wbGd4aHRoand3eXl3Ym52eHp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTIxNzEsImV4cCI6MjA3OTc2ODE3MX0.xNJ6LYv3nVYKGQZ3Tm7cQYKfaEzc8aOKYMMnKBYXqws';
+
+        let client;
+
+        function log(message, isError = false) {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = 'test-result' + (isError ? ' error' : '');
+            div.textContent = message;
+            results.appendChild(div);
+        }
+
+        async function testConnection() {
+            document.getElementById('results').innerHTML = '';
+
+            try {
+                log('Testing Supabase SDK...');
+                log('Supabase SDK loaded: ' + (typeof supabase !== 'undefined'));
+
+                log('Creating client...');
+                client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                log('✅ Client created successfully');
+
+                log('Testing connection with getSession...');
+                const { data, error } = await client.auth.getSession();
+
+                if (error) {
+                    log('❌ Error: ' + error.message, true);
+                } else {
+                    log('✅ Connection successful');
+                    log('Session: ' + (data.session ? 'Active' : 'None'));
+                }
+
+            } catch (error) {
+                log('❌ Exception: ' + error.message, true);
+                console.error(error);
+            }
+        }
+
+        async function testSignup() {
+            document.getElementById('results').innerHTML = '';
+
+            try {
+                if (!client) {
+                    log('Creating client...');
+                    client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                }
+
+                const testEmail = `test_${Date.now()}@example.com`;
+                const testPassword = 'Test123456!';
+
+                log('Testing signup with email: ' + testEmail);
+
+                const { data, error } = await client.auth.signUp({
+                    email: testEmail,
+                    password: testPassword,
+                    options: {
+                        data: {
+                            full_name: 'Test User'
+                        }
+                    }
+                });
+
+                if (error) {
+                    log('❌ Signup error: ' + error.message, true);
+                    log('Error details: ' + JSON.stringify(error, null, 2), true);
+                } else {
+                    log('✅ Signup successful!');
+                    log('User ID: ' + data.user?.id);
+                    log('Email confirmation required: ' + (!data.session));
+                }
+
+            } catch (error) {
+                log('❌ Exception: ' + error.message, true);
+                console.error(error);
+            }
+        }
+
+        // Auto-test on load
+        window.onload = () => {
+            testConnection();
+        };
+    </script>
+</body>
+</html>
