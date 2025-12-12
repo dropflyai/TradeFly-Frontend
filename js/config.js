@@ -1,7 +1,7 @@
 // TradeFly API Configuration
 const API_CONFIG = {
-    // Production API URL (proxied through Vercel)
-    BASE_URL: '',
+    // Local development API URL
+    BASE_URL: 'http://localhost:8001',
 
     // API Endpoints
     ENDPOINTS: {
