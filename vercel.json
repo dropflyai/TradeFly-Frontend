@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "http://18.223.164.188:8002/api/:path*"
+      "destination": "http://18.223.164.188/api/:path*"
     },
     {
       "source": "/((?!login|api|css|js|pages|components|images|test-auth)(?!.*\\.).*)",
