@@ -38,21 +38,21 @@
     <!-- Load Main App -->
     <script src="/js/app.js"></script>
 
-    <!-- Require Authentication -->
+    <!-- Authentication disabled for demo/development -->
     <script>
-        // Check authentication before loading app
+        // DEVELOPMENT MODE: Skip authentication
+        console.log('Running in development mode - authentication bypassed');
+
+        // Optional: Uncomment below to enable authentication
+        /*
         (async function() {
             const authenticated = await TradeFlyAuth.requireAuth();
             if (!authenticated) {
-                // Will redirect to login.html
                 return;
             }
 
-            // Check if user needs onboarding
             try {
                 const profile = await TradeFlyAuth.getUserProfile();
-
-                // If user hasn't completed onboarding and not already on onboarding page
                 if (profile && !profile.onboarding_completed && window.location.pathname !== '/onboarding') {
                     console.log('Redirecting to onboarding...');
                     window.location.href = '/onboarding';
@@ -61,9 +61,8 @@
             } catch (error) {
                 console.error('Error checking onboarding status:', error);
             }
-
-            // User is authenticated and onboarded, app will continue loading
         })();
+        */
     </script>
 </body>
 </html>
