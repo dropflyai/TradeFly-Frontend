@@ -15,6 +15,9 @@
 
     <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Authentication -->
+    <script src="../js/auth.js"></script>
 </head>
 <body class="dark-mode">
     <!-- Top Navigation -->
@@ -271,5 +274,30 @@
 
     <!-- Scripts -->
     <script src="../js/community.js"></script>
+
+    <!-- Require Authentication -->
+    <script>
+        // Protect this page - require login
+        (async () => {
+            const isAuthenticated = await TradeFlyAuth.requireAuth();
+
+            if (isAuthenticated) {
+                // Update user info in nav
+                const user = TradeFlyAuth.currentUser;
+                if (user) {
+                    const userName = document.querySelector('.user-name');
+                    const userAvatar = document.querySelector('.user-avatar');
+
+                    if (userName) {
+                        userName.textContent = user.email.split('@')[0];
+                    }
+
+                    if (userAvatar) {
+                        userAvatar.src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.id}`;
+                    }
+                }
+            }
+        })();
+    </script>
 </body>
 </html>
