@@ -5,7 +5,7 @@
       "destination": "http://api.tradeflyai.com/api/:path*"
     },
     {
-      "source": "/((?!login|api|css|js|pages|components|images|test-auth)(?!.*\\.).*)",
+      "source": "/((?!login|api|css|js|pages|components|images|test-auth|community-preview)(?!.*\\.).*)",
       "destination": "/index.html"
     }
   ],
