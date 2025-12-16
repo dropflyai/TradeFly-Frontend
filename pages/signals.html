@@ -465,7 +465,7 @@ const SignalsPage = {
         // Apply price range filter
         const beforePrice = filtered.length;
         filtered = filtered.filter(signal => {
-            return signal.entry >= this.filters.minPrice && signal.entry <= this.filters.maxPrice;
+            return signal.entry_price >= this.filters.minPrice && signal.entry_price <= this.filters.maxPrice;
         });
         console.log(`  Price filter (${this.filters.minPrice}-${this.filters.maxPrice}): ${beforePrice} → ${filtered.length}`);
 
@@ -549,7 +549,7 @@ const SignalsPage = {
                     </div>
                     <div style="text-align: right;">
                         <div style="font-size: 1.5rem; font-weight: 700; color: ${actionColor};">
-                            $${signal.entry.toFixed(2)}
+                            $${signal.entry_price.toFixed(2)}
                         </div>
                         <div style="font-size: 0.75rem; color: var(--text-secondary);">Entry</div>
                     </div>
@@ -558,7 +558,7 @@ const SignalsPage = {
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
                     <div>
                         <div style="font-size: 0.75rem; color: var(--text-secondary);">Target</div>
-                        <div style="font-weight: 600; color: #10b981;">${signal.target.toFixed(2)}</div>
+                        <div style="font-weight: 600; color: #10b981;">${signal.target_price.toFixed(2)}</div>
                     </div>
                     <div>
                         <div style="font-size: 0.75rem; color: var(--text-secondary);">Stop Loss</div>
@@ -576,7 +576,7 @@ const SignalsPage = {
 
                 <div style="display: flex; gap: 0.5rem;">
                     <button class="btn btn-primary" style="flex: 1; background: ${actionColor}; border-color: ${actionColor};">
-                        ${actionText} → $${signal.entry.toFixed(2)}
+                        ${actionText} → $${signal.entry_price.toFixed(2)}
                     </button>
                     <button class="btn btn-secondary" onclick="SignalsPage.viewDetails('${contract.contract_id}')">
                         View Details

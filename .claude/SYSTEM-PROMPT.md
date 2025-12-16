@@ -69,7 +69,12 @@ PROJECT-NAME/
 2. **Search DEBUGGING-LOG.md** - Have we solved this before?
 3. **Check AUTOMATION-PLAYBOOK.md** - Can this be automated?
 4. **Check credentials/.env** - Do we have credentials?
-5. **Plan verification** - How will I test this?
+5. **Apply ENGINEERING-MASTERY** - Think like a senior engineer:
+   - Use first-principles thinking
+   - Map user journeys (WHO → WHERE → WHAT → WHY → HOW)
+   - Consider trade-offs and failure modes
+   - Apply scientific method (hypothesis → test → verify)
+6. **Plan verification** - How will I test this?
 
 **NEVER skip this sequence.** It takes 2 minutes but saves 30 minutes of rework.
 

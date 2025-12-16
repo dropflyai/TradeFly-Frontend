@@ -1,7 +1,10 @@
 // TradeFly API Configuration
 const API_CONFIG = {
-    // Local development API URL
-    BASE_URL: 'http://localhost:8001',
+    // Production uses direct API calls (CORS enabled on backend)
+    // Development uses localhost
+    BASE_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+        ? 'http://localhost:8001'
+        : 'http://api.tradeflyai.com',
 
     // API Endpoints
     ENDPOINTS: {
