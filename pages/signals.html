@@ -36,8 +36,6 @@
 }
 </style>
 
-<!-- Stats Summary - Removed per user request (non-functional) -->
-
 <!-- Advanced Filters -->
 <div class="card mb-3">
     <h3 style="margin-bottom: 1rem; font-size: 1rem; font-weight: 600;">🎯 Signal Filters</h3>
@@ -213,8 +211,6 @@ const SignalsPage = {
     },
 
     async init() {
-        console.log('Initializing Signals page');
-
         // Set up event listeners
         this.setupEventListeners();
 
@@ -353,7 +349,7 @@ const SignalsPage = {
                 }
             }
         } catch (error) {
-            console.error('Error loading market status:', error);
+            // Market status error - fail silently, non-critical
         }
     },
 
@@ -365,7 +361,7 @@ const SignalsPage = {
 
             this.renderTopMovers();
         } catch (error) {
-            console.error('Error loading top movers:', error);
+            // Top movers error - fail silently, non-critical
         }
     },
 
@@ -419,65 +415,61 @@ const SignalsPage = {
             params.append('max_price', this.filters.maxPrice);
             params.append('max_results', '20');
 
-            console.log('🔍 Fetching signals with params:', params.toString());
             const response = await fetch(`/api/options/signals?${params}`);
-            console.log('📡 Response status:', response.status);
-
             const data = await response.json();
-            console.log('📊 Received signals:', data.length, 'signals');
-            console.log('📋 First signal:', data[0]);
-
             this.signals = data;
 
             this.filterSignals();
         } catch (error) {
-            console.error('❌ Error loading signals:', error);
-            document.getElementById('signals-container').innerHTML =
-                '<div class="error">Error loading signals. Please try again.</div>';
+            this.renderError('Unable to load signals. Please check your connection and try again.');
         }
     },
 
+    renderError(message) {
+        const container = document.getElementById('signals-container');
+        container.innerHTML = `
+            <div class="card" style="text-align: center; padding: 3rem; border: 2px solid #ef4444;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">⚠️</div>
+                <h3 style="margin-bottom: 0.5rem; color: #ef4444;">Error</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">${message}</p>
+                <button class="btn btn-primary" onclick="SignalsPage.loadSignals()">
+                    🔄 Retry
+                </button>
+            </div>
+        `;
+    },
+
     filterSignals() {
-        console.log('🔍 Starting filter with', this.signals.length, 'signals');
         let filtered = [...this.signals];
 
         // Apply moneyness filter
         if (this.filters.moneyness) {
-            const beforeLength = filtered.length;
             filtered = filtered.filter(signal => {
                 const moneyness = this.calculateMoneyness(signal);
                 return moneyness === this.filters.moneyness;
             });
-            console.log(`  Moneyness filter: ${beforeLength} → ${filtered.length}`);
         }
 
         // Apply DTE filter
         if (this.filters.dte) {
-            const beforeLength = filtered.length;
             filtered = filtered.filter(signal => {
                 const dte = signal.contract.days_to_expiry;
                 const [min, max] = this.filters.dte === '90+' ? [90, 999] : this.filters.dte.split('-').map(Number);
                 return dte >= min && (max === undefined || dte <= max);
             });
-            console.log(`  DTE filter: ${beforeLength} → ${filtered.length}`);
         }
 
         // Apply price range filter
-        const beforePrice = filtered.length;
         filtered = filtered.filter(signal => {
             return signal.entry_price >= this.filters.minPrice && signal.entry_price <= this.filters.maxPrice;
         });
-        console.log(`  Price filter (${this.filters.minPrice}-${this.filters.maxPrice}): ${beforePrice} → ${filtered.length}`);
 
         // Apply delta range filter
-        const beforeDelta = filtered.length;
         filtered = filtered.filter(signal => {
             const delta = Math.abs(signal.contract.greeks.delta);
             return delta >= this.filters.minDelta && delta <= this.filters.maxDelta;
         });
-        console.log(`  Delta filter (${this.filters.minDelta}-${this.filters.maxDelta}): ${beforeDelta} → ${filtered.length}`);
 
-        console.log('✅ Final filtered signals:', filtered.length);
         this.renderSignals(filtered);
     },
 
@@ -587,8 +579,7 @@ const SignalsPage = {
     },
 
     viewDetails(contractId) {
-        console.log('View details for:', contractId);
-        // TODO: Navigate to contract details page
+        // Contract details navigation - to be implemented
     }
 };
 
