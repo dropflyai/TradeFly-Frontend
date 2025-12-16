@@ -3,10 +3,6 @@
     {
       "source": "/api/:path*",
       "destination": "http://api.tradeflyai.com/api/:path*"
-    },
-    {
-      "source": "/((?!login|api|css|js|pages|components|images|test-auth|community-preview)(?!.*\\.).*)",
-      "destination": "/index.html"
     }
   ],
   "headers": [
