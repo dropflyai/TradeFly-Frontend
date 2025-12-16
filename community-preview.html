@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Preview | TradeFly</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0A0E14 0%, #1E2530 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #00FF87, #00D4FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        p {
+            font-size: 1.25rem;
+            color: #A0AEC0;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+
+        .feature {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(0, 255, 135, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature h3 {
+            color: #00FF87;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature p {
+            font-size: 0.9rem;
+            color: #718096;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #00FF87, #00D4FF);
+            color: #0A0E14;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin: 0.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 255, 135, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(0, 255, 135, 0.3);
+        }
+
+        .note {
+            background: rgba(255, 184, 32, 0.1);
+            border: 1px solid rgba(255, 184, 32, 0.3);
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin-top: 3rem;
+        }
+
+        .note h4 {
+            color: #FFB820;
+            margin-bottom: 0.5rem;
+        }
+
+        .note p {
+            font-size: 0.95rem;
+            color: #E5E5E5;
+            margin: 0;
+        }
+
+        .code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.3rem 0.6rem;
+            border-radius: 0.25rem;
+            font-family: 'Courier New', monospace;
+            color: #00FF87;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 New Community Platform</h1>
+        <p>
+            Welcome to the premium TradeFly social trading community!<br>
+            We've built a StockTwits-style platform with custom design optimized for options traders.
+        </p>
+
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">📊</div>
+                <h3>Live Feed</h3>
+                <p>Real-time options signals with confidence bars, Greeks visualization, and strategy filters</p>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">🔥</div>
+                <h3>Trending Contracts</h3>
+                <p>See the most discussed options contracts in the last 24 hours</p>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">🏆</div>
+                <h3>Leaderboard</h3>
+                <p>Top traders ranked by reputation and verified performance</p>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">⚡</div>
+                <h3>Strategy Rooms</h3>
+                <p>Join communities for Scalping, Momentum, Flow, or general trading</p>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">📈</div>
+                <h3>Greeks Display</h3>
+                <p>Delta, Gamma, Theta, Vega shown as visual progress bars (not just numbers)</p>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">🌙</div>
+                <h3>Dark Mode</h3>
+                <p>Premium dark theme optimized to reduce trader eye strain</p>
+            </div>
+        </div>
+
+        <div style="margin: 2rem 0;">
+            <a href="/pages/community.html" class="btn">View Community (Login Required)</a>
+            <a href="/login.html" class="btn btn-secondary">Sign In First</a>
+        </div>
+
+        <div class="note">
+            <h4>⚠️ Setup Required</h4>
+            <p>
+                <strong>Backend not yet deployed:</strong> The social API endpoints need to be deployed to EC2 first.
+                The community page will show skeleton loaders until the API is live.
+            </p>
+            <p style="margin-top: 0.5rem;">
+                <strong>To deploy backend:</strong> SSH into EC2, run <span class="code">cd TradeFly-Backend && git pull && docker-compose restart</span>
+            </p>
+        </div>
+
+        <div style="margin-top: 3rem; color: #718096; font-size: 0.9rem;">
+            <p>
+                <strong>New files created:</strong><br>
+                • <span class="code">pages/community.html</span> (300+ lines)<br>
+                • <span class="code">css/community.css</span> (1000+ lines)<br>
+                • <span class="code">js/community.js</span> (800+ lines)<br>
+                <br>
+                <strong>Backend API:</strong> 15+ REST endpoints ready to deploy<br>
+                <strong>Database:</strong> 12 tables with Row-Level Security deployed ✅
+            </p>
+        </div>
+    </div>
+</body>
+</html>
