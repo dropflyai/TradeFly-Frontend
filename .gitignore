@@ -11,3 +11,9 @@ credentials/services/*.env
 # Verification artifacts
 /tmp/verification_*
 
+# Playwright and test artifacts
+node_modules/
+package-lock.json
+playwright-report/
+test-results/
+.playwright/
